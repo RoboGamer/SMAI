@@ -1,0 +1,44 @@
+G
+h
+$! d
+s/(.*::STRING\n)(.*)(\nSTRING::.*::SUBST\n)(.*)(\nSUBST::\n.*)/\
+\2::STRINGSUBST::!!\4%%::SUBST/
+s/\n//
+: l1
+s/(.*SUBST::)(.*)\n(.*)(::SUBST)/\1\2%%!!\3\4/
+t l1
+h
+i
+i INPUT:
+s/(.*)(::STRING.*)/\1/
+p
+i
+i SUBSTITUTION:
+g
+: start
+s/(.*SUBST::)(.*)(::SUBST)(.*)/\1\2\3CYCLE::\2::CYCLE/
+t continue
+: continue
+s/(.*CYCLE::)(.*)!!(.*)%%(::CYCLE)(.*)/\1\2\4REG-A::\3::REG-A/
+t c1
+b print
+: c1
+s/(.*)(.*)(::STRING.*REG-A::)\1!-->(.*)(::REG-A)/\4\2\3\1!-->\4\5/
+t print
+s/(.*)(.*)(::STRING.*REG-A::)\1--->(.*)(::REG-A)/\4\2\3\1--->\4\5/
+t replace
+b continue
+: print
+i
+i OUTPUT:
+s/(.*)(::STRING.*)/\1/
+p
+i
+i
+q
+: replace
+h
+s/(.*)(::STRING.*)/\1/
+p
+g
+b start
