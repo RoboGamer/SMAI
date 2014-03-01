@@ -5,4 +5,9 @@ Markov Algorithm Interpreter written in sed
 
 Launch
 
-sed -nrf markovproc squareroot.dat
+To find the square root of 9 run:
+
+sed -nrf markovproc squareroot.ptr
+
+You can change the number between tags STRING:: and ::STRING inside a  squareroot.ptr and run  the command again.
+
